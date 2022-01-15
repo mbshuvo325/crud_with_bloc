@@ -12,7 +12,7 @@ class CreateProductRequest {
   });
 
   String name;
-  double price;
+  String price;
   String? id;
 
   factory CreateProductRequest.fromJson(String str) => CreateProductRequest.fromMap(json.decode(str));
@@ -25,9 +25,13 @@ class CreateProductRequest {
     id: json["id"],
   );
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap()
+  {
+  print("N: $name P: $price");
+    return {
     "name": name,
     "price": price,
     "id" : id,
   };
+  }
 }

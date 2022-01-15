@@ -9,17 +9,19 @@ class UserRepository {
 
   Future<List<Product>> getAllProduct() async {
     var response = await http.get(Uri.parse("$baseUrl/product_retrive.php"));
-    GetAllProduct userList = json.decode(response.body);
-    List<Product> product = userList.data!.map((pro) => Product.fromMap(pro as Map<String,dynamic>)).toList();
+    print("JS: ${response.body}");
+    final userList = json.decode(response.body);
+    List<Product> product = (userList["data"] as List<dynamic>).map((pro) => Product.fromMap(pro)).toList();
     return product;
   }
 
   Future<String> createProduct(CreateProductRequest request) async {
+    print("REQ: ${request.toJson()}");
     var response = await http.post(Uri.parse("$baseUrl/insert_product.php"),
-      body:request.toMap(),
+      body:request.toJson(),
     );
-    var result = jsonDecode(response.body);
-    return result;
+    print("RP: ${response.body}");
+    return response.body;
   }
 
   Future<bool> updateProduct(CreateProductRequest request) async {
