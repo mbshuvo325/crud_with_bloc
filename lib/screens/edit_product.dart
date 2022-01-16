@@ -1,51 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:telentproapp/bloc/add_product/add_product_bloc.dart';
+import 'package:telentproapp/bloc/edit_product/edit_product_bloc.dart';
 import 'package:telentproapp/bloc/get_all_product_bloc.dart';
+import 'package:telentproapp/models/get_all_prouct_response.dart';
 import 'package:telentproapp/screens/home_screen.dart';
 
-class AddProductPage extends StatefulWidget {
-  const AddProductPage({Key? key}) : super(key: key);
+class EditProductPage extends StatefulWidget {
+  final Product product;
+  const EditProductPage({Key? key, required this.product}) : super(key: key);
 
   @override
-  _AddProductPageState createState() => _AddProductPageState();
+  _EditProductPageState createState() => _EditProductPageState();
 }
 
-class _AddProductPageState extends State<AddProductPage> {
+class _EditProductPageState extends State<EditProductPage> {
   final _formKey = GlobalKey<FormState>();
   String name = '';
   String price = '';
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Add Product".toUpperCase(),style: headerStyle,),
+          title: Text("Edit Product".toUpperCase(),style: headerStyle,),
         ),
-        body: BlocListener<AddProductBloc,AddProductState>(
+        body: BlocListener<EditProductBloc,EditProductState>(
           listener: (context, state) {
-            if(state is ApLoaded){
+            if(state is EpLoaded){
            BlocProvider.of<GetAllProductBloc>(context).add(GetAllProductEventWithParmas());
               Navigator.pop(context);
             }
           },
-          child: BlocBuilder<AddProductBloc, AddProductState>(
+          child: BlocBuilder<EditProductBloc, EditProductState>(
             builder: (context, state) {
-              if (state is ApLoading) {
+              if (state is EpLoading) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CircularProgressIndicator(),
                       SizedBox(height: 20,),
-                      Text('Adding product'.toUpperCase(),style: loadingStyle,)
+                      Text('Editing product'.toUpperCase(),style: loadingStyle,)
                     ],
                   ),
                 );
               }
-              if(state is ApError){
+              if(state is EpError){
                 return Center(child: Text("Error"),);
               }
               return SingleChildScrollView(
@@ -60,6 +62,7 @@ class _AddProductPageState extends State<AddProductPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
                         child: TextFormField(
+                          initialValue: widget.product.name,
                           validator: (value){
                             if(value!.isEmpty){
                               return "Name con not be empty";
@@ -85,6 +88,7 @@ class _AddProductPageState extends State<AddProductPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
                         child: TextFormField(
                           keyboardType: TextInputType.number,
+                          initialValue: widget.product.price,
                           validator: (value){
                             if(value!.isEmpty){
                               return "Price con not be empty";
@@ -119,10 +123,13 @@ class _AddProductPageState extends State<AddProductPage> {
                             onPressed: (){
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();
-                                BlocProvider.of<AddProductBloc>(context).add(AddProductEvent(name, price));
+                                BlocProvider.of<EditProductBloc>(context).add(EditProductEvent(name: name,id: widget.product.proId!,price: price));
+                                setState(() {
+
+                                });
                               }
                             },
-                            child: Center(child: Text("Add".toUpperCase(),style: headerStyle,),),
+                            child: Center(child: Text("Edit".toUpperCase(),style: headerStyle,),),
                           ),
                         ),
                       ),

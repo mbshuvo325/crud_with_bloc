@@ -9,34 +9,39 @@ class UserRepository {
 
   Future<List<Product>> getAllProduct() async {
     var response = await http.get(Uri.parse("$baseUrl/product_retrive.php"));
-    print("JS: ${response.body}");
     final userList = json.decode(response.body);
     List<Product> product = (userList["data"] as List<dynamic>).map((pro) => Product.fromMap(pro)).toList();
     return product;
   }
 
   Future<String> createProduct(CreateProductRequest request) async {
-    print("REQ: ${request.toJson()}");
+    var body = {
+      "name" : request.name,
+      "price" : request.price
+    };
     var response = await http.post(Uri.parse("$baseUrl/insert_product.php"),
-      body:request.toJson(),
+      body:body,
     );
-    print("RP: ${response.body}");
     return response.body;
   }
 
-  Future<bool> updateProduct(CreateProductRequest request) async {
-    var response = await http.put(Uri.parse( "$baseUrl/update_product.php"),
-      body: request.toMap(),
+  Future<String> updateProduct(CreateProductRequest request) async {
+    var body = {
+      "name" : request.name,
+      "price" : request.price,
+      "pro_id" : request.id
+    };
+    var response = await http.post(Uri.parse( "$baseUrl/update_product.php"),
+      body: body,
     );
-    var result = jsonDecode(response.body);
-    return result;
+    return response.body;
   }
 
-  Future<bool> deleteUser(String id) async {
-    var response = await http.post(Uri.parse("$baseUrl/delete_product.php"),body: {
+  Future<String> deleteProduct(String id) async {
+    var body = {
       "pro_id" : id
-    });
-    var result = jsonDecode(response.body);
-    return result;
+    };
+    var response = await http.post(Uri.parse("$baseUrl/delete_product.php"),body: body);
+    return response.body;
   }
 }

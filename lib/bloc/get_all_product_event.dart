@@ -1,9 +1,10 @@
 part of 'get_all_product_bloc.dart';
 
 @immutable
-abstract class GetAllProductEvent {}
- class GetAllProductEventWithParmas implements GetAllProductEvent {
-  final int id;
+abstract class GetAllProductEvent {
 
-  GetAllProductEventWithParmas(this.id);
+}
+ class GetAllProductEventWithParmas implements GetAllProductEvent {
+ final String? id;
+  GetAllProductEventWithParmas({this.id});
  }

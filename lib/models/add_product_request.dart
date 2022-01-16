@@ -27,7 +27,6 @@ class CreateProductRequest {
 
   Map<String, dynamic> toMap()
   {
-  print("N: $name P: $price");
     return {
     "name": name,
     "price": price,

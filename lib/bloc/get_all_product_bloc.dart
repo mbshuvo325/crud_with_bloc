@@ -15,13 +15,24 @@ class GetAllProductBloc extends Bloc<GetAllProductEvent, GetAllProductState> {
   GetAllProductBloc() : super(GetAllProductInitial()) {
     on<GetAllProductEvent>((event, emit) async {
       if (event is GetAllProductEventWithParmas) {
-        // emit(GetAllProductLoading());
-        try {
-          final list = await _repository.getAllProduct();
-
-          emit(GetAllProductLoaded(list));
-        } catch (e) {
-          emit(GetAllProductError());
+        if(event.id != null){
+          //emit(GetAllProductLoading());
+          try {
+            await _repository.deleteProduct(event.id!).then((value) async{
+              final list = await _repository.getAllProduct();
+              emit(GetAllProductLoaded(list));
+            });
+          } catch (e) {
+            emit(GetAllProductError());
+          }
+        }else{
+          emit(GetAllProductLoading());
+          try {
+            final list = await _repository.getAllProduct();
+            emit(GetAllProductLoaded(list));
+          } catch (e) {
+            emit(GetAllProductError());
+          }
         }
       }
     });

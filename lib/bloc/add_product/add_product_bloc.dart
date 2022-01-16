@@ -6,7 +6,6 @@ import 'package:telentproapp/repositories/product_repo.dart';
 class AddProductEvent{
   final String name;
   final String price;
-
   AddProductEvent(this.name, this.price);
 }
 
@@ -29,13 +28,13 @@ class AddProductBloc extends Bloc<AddProductEvent, AddProductState>{
   AddProductBloc() : super(ApInitial()){
     on((AddProductEvent event, emit)async{
       emit(ApLoading());
-      // try {
+      try {
         final res = await _repository.createProduct(
             CreateProductRequest(name: event.name, price: event.price));
         emit(ApLoaded(res));
-      // }catch(e){
-      //   emit(ApError());
-      // }
+      }catch(e){
+        emit(ApError());
+      }
     });
   }
 }
