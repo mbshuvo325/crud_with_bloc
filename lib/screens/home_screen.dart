@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
             return state.products.isNotEmpty ? ListView.builder(
               itemCount: state.products.length,
               itemBuilder: (context, index) {
-                var product = state.products[index];
+                var product = state.products[state.products.length -1- index];
                 return Card(
                   elevation: 5,
                   child: Container(
