@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:telentproapp/bloc/add_product/add_product_bloc.dart';
-import 'package:telentproapp/bloc/delete_product/delete_product_bloc.dart';
-import 'package:telentproapp/bloc/get_all_product_bloc.dart';
+import 'package:telentproapp/repositories/product_repo.dart';
 import 'package:telentproapp/screens/home_screen.dart';
-
-import 'bloc/edit_product/edit_product_bloc.dart';
+import 'bloc/get_all_product_state.dart';
+import 'bloc/product_cubit.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final UserRepository productRepo = UserRepository();
     return MultiBlocProvider(providers: [
-      BlocProvider(create: (context) => GetAllProductBloc(),),
-      BlocProvider(create: (context) => AddProductBloc(),),
-      BlocProvider(create: (context) => EditProductBloc(),),
-      BlocProvider(create: (context) => DeleteProductBloc(),),
+      BlocProvider(create: (context) => ProductCubit(GetAllProductInitial(),productRepo),),
     ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

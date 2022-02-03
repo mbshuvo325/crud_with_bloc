@@ -1,13 +1,13 @@
-part of 'get_all_product_bloc.dart';
+import 'package:telentproapp/models/get_all_prouct_response.dart';
 
-@immutable
-abstract class GetAllProductState {}
+class GetAllProductState {
+
+}
 
 class GetAllProductInitial extends GetAllProductState {}
 class GetAllProductLoading extends GetAllProductState {}
 class GetAllProductLoaded extends GetAllProductState {
   final List<Product> products;
-
   GetAllProductLoaded(this.products);
 }
 class GetAllProductError extends GetAllProductState {}
