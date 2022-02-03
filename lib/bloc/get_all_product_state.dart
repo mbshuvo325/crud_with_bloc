@@ -5,7 +5,10 @@ class GetAllProductState {
 }
 
 class GetAllProductInitial extends GetAllProductState {}
-class GetAllProductLoading extends GetAllProductState {}
+class GetAllProductLoading extends GetAllProductState {
+  final String loadingText;
+  GetAllProductLoading(this.loadingText);
+}
 class GetAllProductLoaded extends GetAllProductState {
   final List<Product> products;
   GetAllProductLoaded(this.products);

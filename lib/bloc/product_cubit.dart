@@ -8,13 +8,13 @@ import 'get_all_product_state.dart';
 
 class ProductCubit extends Cubit<GetAllProductState>{
   ProductCubit(GetAllProductState initialState, this.productRepo) : super(initialState){
-    getAllProduct();
+    getAllProduct("Getting Product");
   }
   final UserRepository productRepo;
 
-  void getAllProduct() async{
+  void getAllProduct(String text) async{
     try{
-      emit(GetAllProductLoading());
+      emit(GetAllProductLoading(text));
       final product = await productRepo.getAllProduct();
       emit(GetAllProductLoaded(product));
     }catch (e){
@@ -24,19 +24,19 @@ class ProductCubit extends Cubit<GetAllProductState>{
 
   addProduct(CreateProductRequest productRequest) async{
     await productRepo.createProduct(productRequest).then((value){
-      getAllProduct();
+      getAllProduct("Adding Product");
     });
   }
 
   editProduct(CreateProductRequest productRequest) async{
     await productRepo.updateProduct(productRequest).then((value){
-      getAllProduct();
+      getAllProduct("Editing Product");
     });
   }
 
   deleteProduct(String proId) async{
     await productRepo.deleteProduct(proId).then((value){
-      getAllProduct();
+      getAllProduct("Deleting Product");
     });
   }
 }

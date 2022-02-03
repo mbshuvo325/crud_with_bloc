@@ -72,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                       CircularProgressIndicator(),
                       SizedBox(height: 20,),
-                      Text('Getting product'.toUpperCase(),style: loadingStyle,)
+                      Text('${state.loadingText}'.toUpperCase(),style: loadingStyle,)
                     ],
                   ),
                 );
